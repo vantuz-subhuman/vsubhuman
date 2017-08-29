@@ -11,6 +11,8 @@
         "aws_region": "us-west-2",
         "profile_name": "default",
         "s3_bucket": "com.vsubhuman.lambda",
-        "project_name": "vsubhuman"
+        "project_name": "vsubhuman",
+        "domain": "vsubhuman.com",
+        "lets_encrypt_key": "s3://com.vsubhuman.secure/vsubhuman.key"
     }
 }
