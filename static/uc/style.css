@@ -1,5 +1,17 @@
 html, body {margin: 0; height: 100%; overflow: hidden}
 
+#text {
+    position: absolute;
+}
+
+#title {
+    border: 5px ridge;
+    padding-right: 20%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    margin-top: 0;
+}
+
 img {
     position: absolute
 }

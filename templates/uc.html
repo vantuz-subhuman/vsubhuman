@@ -1,0 +1,24 @@
+{% set uc = static_root('uc') %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vsubhuman.com</title>
+    <link rel="stylesheet" type="text/css" href="{{ uc('style.css') }}"/>
+</head>
+<body>
+    <img id="uc_wall" src="{{ uc('uc_wall.jpg') }}"/>
+    <div id="text">
+        {% if back %}
+            <a href="{{ back.url }}">{{ '<- Back to %s' % (back.name or back.url) }}</a>
+        {% endif %}
+        <h2 id="title"><font color="blue"><u>This</u></font> page is under construction</h2>
+    </div>
+    <img id="uc1" src="{{ uc('uc1.gif') }}"/>
+    <img id="uc6" src="{{ uc('uc6.gif') }}"/>
+    <img id="uc3" src="{{ uc('uc3.gif') }}"/>
+    <img id="uc2" src="{{ uc('uc2.gif') }}"/>
+    <img id="uc4" src="{{ uc('uc4.gif') }}"/>
+    <img id="uc5" src="{{ uc('uc5.gif') }}"/>
+</body>
+</html>
