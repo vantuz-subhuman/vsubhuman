@@ -1,0 +1,16 @@
+{
+    "dev": {
+        "app_function": "vsubhuman.app",
+        "aws_region": "us-west-2",
+        "profile_name": "default",
+        "s3_bucket": "zappa.vsubhuman.com",
+        "project_name": "vsubhuman"
+    },
+    "production": {
+        "app_function": "vsubhuman.app",
+        "aws_region": "us-west-2",
+        "profile_name": "default",
+        "s3_bucket": "zappa.vsubhuman.com",
+        "project_name": "vsubhuman"
+    }
+}
