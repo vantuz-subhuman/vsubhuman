@@ -2,6 +2,10 @@ def empty(s):
     return s is None or len(s) == 0
 
 
+def destruct(dict, *keys):
+    return [dict.get(k) if dict else None for k in keys]
+
+
 def assoc(dict, k, v):
     dict[k] = v
     return dict
@@ -19,3 +23,4 @@ def P(f, *args, **kwargs):
         kwargs.update(kwargs2)
         return f(*fargs, *largs2, **kwargs)
     return foo
+

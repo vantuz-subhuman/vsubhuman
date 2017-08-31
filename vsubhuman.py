@@ -1,8 +1,9 @@
 import os
 
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for, session
 
 import template_utils
+from vutil import *
 
 app = Flask(__name__)
 
@@ -15,6 +16,30 @@ def index():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
+@app.route('/admin')
+def admin():
+    if not session.get('logged_in'):
+        return redirect(url_for('login') + '?redirect=%s' % url_for('admin'))
+    return render_template('admin.html', user=session['user'])
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        logout, login, password, target = destruct(request.form, 'logout', 'login', 'password', 'redirect')
+        if logout:
+            session['logged_in'] = False
+            session['user'] = None
+        elif login == 'qwe' and password == 'qwe':
+            session['logged_in'] = True
+            session['user'] = {'login': login}
+            return redirect(target or url_for('index'))
+        else:
+            error = 'Incorrect login or password'
+    return render_template('login.html', error=error)
 
 
 @app.route('/uc')
@@ -42,6 +67,7 @@ def context():
 
 
 if __name__ == '__main__':
+    app.secret_key = os.environ.get('secret_key', 'dev')
     debug = os.environ.get('debug', 'true') == 'true'
     print('Debug: %s' % debug)
     app.run(debug=debug)

@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% set title = 'Log in' %}
+{% set login = session.user.login if session.logged_in else None %}
+{% set redirect = request.args.get('redirect') %}
+
+{% block body %}
+    <h3>{{ title }}</h3>
+    {% if login %}
+        <p class="lead">You are already logged in as: <code>{{ login }}</code></p>
+        <form action="" type="Submit" method="post">
+            <input type="hidden" name="logout" value="true">
+            <fieldset class="form-group">
+                <button type="submit" class="btn btn-default">Log out</button>
+            </fieldset>
+        </form>
+    {% else %}
+        <p class="lead">Please, log in, to access this page:</p>
+        <form action="" type="Submit" method="post">
+            <fieldset class="form-group">
+                <label for="login" class="col-form-label sr-only">Login</label>
+                <input type="text" class="form-control col-4" id="login" name="login" placeholder="Login">
+            </fieldset>
+            <fieldset class="form-group">
+                <label for="password" class="col-form-label sr-only">Password</label>
+                <input type="password" class="form-control col-4" id="password" name="password" placeholder="Password">
+            </fieldset>
+            <fieldset class="form-group">
+                {% if redirect %}
+                    <input type="hidden" name="redirect" value="{{ redirect }}">
+                {% endif %}
+                <button type="submit" class="btn btn-default">Submit</button>
+            </fieldset>
+        </form>
+    {% endif %}
+{% endblock %}
