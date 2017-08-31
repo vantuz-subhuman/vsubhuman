@@ -33,12 +33,13 @@ def login():
         if logout:
             session['logged_in'] = False
             session['user'] = None
-        elif login == 'qwe' and password == 'qwe':
-            session['logged_in'] = True
-            session['user'] = {'login': login}
-            return redirect(target or url_for('index'))
-        else:
-            error = 'Incorrect login or password'
+        if not empty(login):
+            if login == 'qwe' and password == 'qwe':
+                session['logged_in'] = True
+                session['user'] = {'login': login}
+                return redirect(target or url_for('index'))
+            else:
+                error = 'Incorrect login or password'
     return render_template('login.html', error=error)
 
 
