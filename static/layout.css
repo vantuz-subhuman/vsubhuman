@@ -16,6 +16,20 @@ html, body {
     padding-bottom: 50px;
 }
 
+#navbar {
+    height: 60px;
+}
+
 footer {
     height: 50px;
+}
+
+.navbar-brand {
+    margin-bottom: 3px;
+}
+
+.extern {
+    width: 16px;
+    margin-left: -5px;
+    margin-top: -15px;
 }
