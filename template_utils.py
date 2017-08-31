@@ -9,4 +9,8 @@ def static_root(path):
 
 def static(file, path=None):
     pref = path + '/' if not empty(path) else ''
-    return url_for('static', filename=(pref + file), _external=True)
+    return url('static', filename=(pref + file))
+
+
+def url(endpoint, **values):
+    return url_for(endpoint, _external=True, **values)

@@ -1,14 +1,20 @@
+import os
+
 from flask import Flask, request, render_template
 
 import template_utils
-import os
 
 app = Flask(__name__)
 
 
 @app.route('/')
 def index():
-    return render_template('uc.html')
+    return render_template('index.html')
+
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 
 @app.route('/uc')
@@ -21,11 +27,17 @@ def uc():
     return render_template('uc.html', back=back)
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')
+
+
 @app.context_processor
 def context():
     return dict(
         static=template_utils.static,
-        static_root=template_utils.static_root
+        static_root=template_utils.static_root,
+        url=template_utils.url
     )
 
 
