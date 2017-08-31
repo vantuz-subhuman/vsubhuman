@@ -9,26 +9,55 @@
 </head>
 <body>
 
-    <div class="container">
-        <nav class="navbar navbar-expand-sm navbar-light bg-light rounded" id="navbar">
-            <a class="navbar-brand" href="{{ url('index') }}">vsubhuman.com</a>
-            <div class="collapse navbar-collapse justify-content-end" id="nav-content">
+    {% set user = session.get('user') %}
+
+    <div class="container" id="body-container">
+
+        <div class="wrapper">
+            <nav class="navbar navbar-expand-sm navbar-light bg-light rounded card-header row" id="navbar">
+                <a class="navbar-brand" href="{{ url('index') }}">vsubhuman.com</a>
+                <div class="collapse navbar-collapse justify-content-end" id="nav-content">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="{{ url('about') }}">About me</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="row">
+                <div class="container col-8" id="block-body">
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            {{ error }}
+                        </div>
+                    {% endif %}
+                    {% block body %}
+                    {% endblock %}
+                </div>
+                <div class="container col-4"></div>
+            </div>
+        </div>
+
+        <footer class="navbar navbar-expand-sm navbar-light bg-light rounded card-footer footer row" id="navbar">
+            <div class="collapse navbar-collapse justify-content-start">
                 <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="{{ url('about') }}">About me</a></li>
+                    {% set email = 'vantuz-subhuman@yandex.ru' %}
+                    <li class="nav-item"><a class="nav-link" href="mailto:{{ email }}">{{ email }}</a></li>
                 </ul>
             </div>
-        </nav>
-
-        {% if error %}
-            <div class="alert alert-danger">
-                {{ error }}
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('login') }}">
+                            {% if user %}
+                                <code>[{{ user.login }}]</code>
+                            {% else %}
+                                Log In
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
             </div>
-        {% endif %}
-
-        <div class="container" id="block-body">
-            {% block body %}
-            {% endblock %}
-        </div>
+        </footer>
     </div>
 
     <script src="{{ static('jquery-3.2.1.slim.min.js') }}"></script>

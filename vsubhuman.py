@@ -34,7 +34,7 @@ def login():
             session['logged_in'] = False
             session['user'] = None
         if not empty(login):
-            if login == 'qwe' and password == 'qwe':
+            if login == 'admin' and password == 'admin':
                 session['logged_in'] = True
                 session['user'] = {'login': login}
                 return redirect(target or url_for('index'))
