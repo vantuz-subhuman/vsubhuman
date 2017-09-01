@@ -12,16 +12,16 @@ html, body {
 
 .wrapper {
     min-height: 100%;
-    margin-bottom: -50px;
-    padding-bottom: 50px;
+    margin-bottom: -40px;
+    padding-bottom: 40px;
 }
 
 #navbar {
-    height: 60px;
+    height: 50px;
 }
 
 footer {
-    height: 50px;
+    height: 40px;
 }
 
 .navbar-brand {
@@ -32,4 +32,21 @@ footer {
     width: 16px;
     margin-left: -5px;
     margin-top: -15px;
+}
+
+.navbar-header {
+    border-bottom: 1px solid black;
+}
+
+.navbar-footer {
+    border-top: 1px solid black;
+}
+
+.nav-link {
+    text-decoration: underline;
+    text-decoration-color: lightgray;
+}
+
+footer .nav-item {
+    font-size: 0.8rem;
 }
