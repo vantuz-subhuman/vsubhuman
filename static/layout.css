@@ -50,3 +50,7 @@ footer {
 footer .nav-item {
     font-size: 0.8rem;
 }
+
+button {
+    cursor: pointer;
+}

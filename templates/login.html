@@ -14,15 +14,17 @@
             </fieldset>
         </form>
     {% else %}
+        {% if redirect %}
         <p class="lead">Please, log in, to access this page:</p>
+        {% endif %}
         <form action="" type="Submit" method="post">
             <fieldset class="form-group">
                 <label for="login" class="col-form-label sr-only">Login</label>
-                <input type="text" class="form-control col-4" id="login" name="login" placeholder="Login">
+                <input type="text" class="form-control col-5" id="login" name="login" placeholder="Login">
             </fieldset>
             <fieldset class="form-group">
                 <label for="password" class="col-form-label sr-only">Password</label>
-                <input type="password" class="form-control col-4" id="password" name="password" placeholder="Password">
+                <input type="password" class="form-control col-5" id="password" name="password" placeholder="Password">
             </fieldset>
             <fieldset class="form-group">
                 {% if redirect %}
