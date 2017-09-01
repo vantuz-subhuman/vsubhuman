@@ -5,9 +5,6 @@
     "profile_name": "default",
     "s3_bucket": "com.vsubhuman.lambda",
     "project_name": "vsubhuman",
-    "environment_variables": {
-      "debug": "false"
-    }
   },
   "production": {
     "app_function": "vsubhuman.app",
@@ -17,8 +14,5 @@
     "project_name": "vsubhuman",
     "domain": "vsubhuman.com",
     "lets_encrypt_key": "s3://com.vsubhuman.secure/vsubhuman.key",
-    "environment_variables": {
-      "debug": "false"
-    }
   }
 }

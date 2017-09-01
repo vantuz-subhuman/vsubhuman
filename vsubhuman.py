@@ -6,6 +6,7 @@ import template_utils
 from vutil import *
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('secret_key', 'dev')
 
 
 @app.route('/')
@@ -68,7 +69,5 @@ def context():
 
 
 if __name__ == '__main__':
-    app.secret_key = os.environ.get('secret_key', 'dev')
-    debug = os.environ.get('debug', 'true') == 'true'
-    print('Debug: %s' % debug)
-    app.run(debug=debug)
+    print('Starting app in debug mode')
+    app.run(debug=True)
