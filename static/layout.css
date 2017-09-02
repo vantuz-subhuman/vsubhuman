@@ -1,3 +1,26 @@
+/* Extra small */
+@media only screen and (min-width : 480px) {
+    body{font-size: 10px;}
+}
+
+/* Small */
+@media only screen and (min-width : 768px) {
+    body{font-size: 14px;}
+    .hidden-md-up {
+        display: none;
+    }
+}
+
+/* Medium */
+@media only screen and (min-width : 992px) {
+    body{font-size: 16px;}
+}
+
+/* Large */
+@media only screen and (min-width : 1200px) {
+
+}
+
 #block-body {
     padding-top: 20px;
 }
@@ -35,11 +58,11 @@ footer {
 }
 
 .navbar-header {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid lightgray;
 }
 
 .navbar-footer {
-    border-top: 1px solid black;
+    border-top: 1px solid lightgray;
 }
 
 .nav-link {
@@ -53,4 +76,13 @@ footer .nav-item {
 
 button {
     cursor: pointer;
+}
+
+.dropdown-menu-right {
+    right: 0;
+    left: auto;
+}
+
+.navbar-toggler {
+    border: 0;
 }
