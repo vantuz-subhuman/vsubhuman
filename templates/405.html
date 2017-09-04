@@ -1,0 +1,7 @@
+{% extends 'layout.html' %}
+{% set title = '405' %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+    <p class="lead">Sorry, but this page does not accept method {{ request.method }}</p>
+{% endblock %}
