@@ -44,6 +44,11 @@ def login():
     return render_template('login.html', error=error)
 
 
+@app.route('/tag/<path:id>')
+def tag(id):
+    return '<html><body><h1>Path: "%s"</h1></body></html>' % id.lower().split('/')
+
+
 @app.route('/uc')
 def uc():
     back = None
