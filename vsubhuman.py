@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, session
 
 import template_utils
 from vutil import *
@@ -9,24 +9,42 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('secret_key', 'dev')
 
 
-class Methods:
-    def __init__(self, *methods):
-        self.methods = methods
+class VPages:
+    __slots__ = ['routes']
 
-    def __call__(self, f):
-        f.rest_methods = self.methods
-        return f
+    def __init__(self):
+        self.routes = {}
+
+    def route(self, route, methods={'GET'}, login_required=False):
+        def decorator(f):
+            if route in self.routes:
+                return raiseb('Route "%s" already exists!' % route)
+            if login_required:
+                def login_wrapper(*args, **kwargs):
+                    if not session.get('logged_in'):
+                        return login(template_utils.url(route))
+                    return f(*args, *kwargs)
+                self.routes[route] = login_wrapper
+                login_wrapper.rest_methods = conj_all({'POST'}, methods)
+                return login_wrapper
+            else:
+                self.routes[route] = f
+                f.rest_methods = methods
+                return f
+        return decorator
+
+    def get_handler(self, route):
+        return self.routes.get(route)
+
+    @staticmethod
+    def get_methods(f):
+        return (f.rest_methods if hasattr(f, 'rest_methods') else None) or ['GET']
 
 
-def home():
-    return render_template('index.html')
+vpages = VPages()
 
 
-def about():
-    return render_template('about.html')
-
-
-@Methods('GET', 'POST')
+@vpages.route('/login', methods={'GET', 'POST'})
 def login(target=None):
     error = None
     if request.method == 'POST':
@@ -44,13 +62,12 @@ def login(target=None):
     return render_template('login.html', redirect=(target is not None), error=error)
 
 
-@Methods('GET', 'POST')
+@vpages.route('/admin', login_required=True)
 def admin():
-    if not session.get('logged_in'):
-        return login(template_utils.url('admin'))
     return render_template('admin.html', user=session['user'])
 
 
+@vpages.route('/uc')
 def uc():
     back = None
     if request.args.get('noback') != '1':
@@ -60,13 +77,14 @@ def uc():
     return render_template('uc.html', back=back)
 
 
-routes = {
-    '': home,
-    'about': about,
-    'admin': admin,
-    'login': login,
-    'uc': uc
-}
+@vpages.route('/')
+def index():
+    return render_template('index.html')
+
+
+@vpages.route('/about')
+def about():
+    return render_template('about.html')
 
 
 @app.errorhandler(404)
@@ -82,8 +100,8 @@ def method_not_allowed(e):
 @app.route('/')
 @app.route('/<path:path>', methods=['GET', 'POST'])
 def index(path=None):
-    f = routes.get(path or '')
-    if request.method not in getattr(f, 'rest_methods', ['GET']):
+    f = vpages.get_handler('/%s' % (path or ''))
+    if request.method not in VPages.get_methods(f):
         return method_not_allowed(None)
     return f() if f else page_not_found(None)
 

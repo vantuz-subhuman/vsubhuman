@@ -65,6 +65,65 @@ def destruct(dict, *keys):
     return [dict.get(k) if dict else None for k in keys]
 
 
-def assoc(dict, k, v):
-    dict[k] = v
-    return dict
+def assoc(d, k, v):
+    r = dict(d)
+    r[k] = v
+    return r
+
+
+def raise_(ex):
+    raise ex
+
+
+def raiseb(msg):
+    raise_(BaseException(msg))
+
+
+def raisef(ex_supplier):
+    return lambda: raise_(ex_supplier())
+
+
+def raisefb(msg_supplier):
+    return raisef(lambda: BaseException(msg_supplier()))
+
+
+def switch(val, dict):
+    f = dict.get(val) or dict.get(switch.ELSE)
+    return f() if f else None
+
+
+switch.ELSE = object()
+
+
+def switch_type(val, dict):
+    return switch(type(val) if val else None, dict)
+
+
+def merge_dicts(d1, d2):
+    r = dict(d1)
+    r.update(d2)
+    return r
+
+
+def conj(col, el):
+    return switch_type(col, {
+        None: lambda: [el],
+        list: lambda: list(col) + [el],
+        set: lambda: set(col).union({el}),
+        tuple: lambda: col + (el,),
+        dict: lambda: merge_dicts(col, dict([el])),
+        switch.ELSE: lambda: raiseb('Can conj only one of: list, set, tuple, or dict! Got: %s' % col)
+    })
+
+
+def conj_all(col1, col2):
+    if col2 is None:
+        return col1 or []
+    return switch_type(col1, {
+        None: lambda: list(col2),
+        list: lambda: col1 + list(col2),
+        set: lambda: col1.union(set(col2)),
+        tuple: lambda: col1 + tuple(col2),
+        dict: lambda: merge_dicts(col1, col2),
+        switch.ELSE: lambda: raiseb('Can conj only one of: list, set, tuple, or dict! Got: %s' % col1)
+    })
