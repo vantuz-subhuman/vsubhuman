@@ -1,47 +1,23 @@
+import hashlib
 import os
 
 from flask import Flask, request, render_template, redirect, session
 
 import template_utils
+from vpages import VPages
 from vutil import *
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('secret_key', 'dev')
+vpages = VPages(lambda x: login(x))
 
 
-class VPages:
-    __slots__ = ['routes']
-
-    def __init__(self):
-        self.routes = {}
-
-    def route(self, route, methods={'GET'}, login_required=False):
-        def decorator(f):
-            if route in self.routes:
-                return raiseb('Route "%s" already exists!' % route)
-            if login_required:
-                def login_wrapper(*args, **kwargs):
-                    if not session.get('logged_in'):
-                        return login(template_utils.url(route))
-                    return f(*args, *kwargs)
-                self.routes[route] = login_wrapper
-                login_wrapper.rest_methods = conj_all({'POST'}, methods)
-                return login_wrapper
-            else:
-                self.routes[route] = f
-                f.rest_methods = methods
-                return f
-        return decorator
-
-    def get_handler(self, route):
-        return self.routes.get(route)
-
-    @staticmethod
-    def get_methods(f):
-        return (f.rest_methods if hasattr(f, 'rest_methods') else None) or ['GET']
+def sha256(s):
+    return hashlib.sha256(s.encode('utf-8')).hexdigest()
 
 
-vpages = VPages()
+admin_login = os.environ.get('admin_login', 'admin')
+admin_password = os.environ.get('admin_password', sha256('admin'))
 
 
 @vpages.route('/login', methods={'GET', 'POST'})
@@ -53,7 +29,7 @@ def login(target=None):
             session['logged_in'] = False
             session['user'] = None
         if not empty(login):
-            if login == 'admin' and password == 'admin':
+            if login == admin_login and sha256(password) == admin_password:
                 session['logged_in'] = True
                 session['user'] = {'login': login}
                 return redirect(target or template_utils.url(''))
